@@ -1,0 +1,194 @@
+<!-- 
+    Author: Thresa Kelly.
+    Date: 9/8/23.
+    File: EECS 468 Assignment 2.
+    Description: Runs three exercises. One makes a triangle, two counts 1-100 (with exceptions), and three prints a table. 
+    Inputs: Buttons. 
+    Outputs: Text triangle, numbers 1-100 (with exceptions), and a table of two characters.  
+    Sources: Referenced the lecture slides.
+-->
+
+<!DOCTYPE html>
+<!-- html code below -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Set title of Webpage -->
+        <title>ThresaKelly_Assignment2</title>
+    </head>
+    <h1>Thresa Kelly - Assignment 2</h1>
+
+    <!-- Exercise 2.1 - Looping a triangle: Write a loop that makes 10 calls to output the following triangle:
+        x xx xxx xxxx xxxxx xxxxxx xxxxxxx xxxxxxxx xxxxxxxxx xxxxxxxxxx -->
+    <h2>Exercise 2.1 - Looping a triangle</h2>
+    <p id="ex1">
+        <button onclick="BuildTriangle(10)">Run</button>
+    </p>
+
+    <!-- Exercise 2.2 – FizzBuzz: Write a program that prints all the numbers from 1 to 100, with three exceptions: 
+        (1) For numbers divisible by 4, print "Divisible by 4" instead of the number. 
+        (2) For numbers divisible by 7, but not 4, print "Divisible by 7, but not 4" instead. 
+        (3) For numbers divisible by both 4 and 7, print “Divisible by both 4 and 7”.  -->
+    <h2>Exercise 2.2 - FizzBuzz</h2>
+    <p id="ex2">
+        <button onclick="FizzBuzz(100)">Run</button>
+    </p>
+
+
+    <!-- Exercise 2.3 – n-by-n Grid: Write a program that creates a string that represents an n-by-n grid, 
+        using newline characters to separate lines.  
+        - At each position of the grid there is either a space or a "*" character.  
+        - The first position should be a space. 
+        - Define a binding name “size” so that it works for any size, outputting a square grid of the given width and height. 
+        - Show the output for size = 8 and size = 14. 
+        - Between the output for each size, print out the size (e.g. “size = 6”).  -->
+    <h2>Exercise 2.3 - n-by-n Grid</h2>
+    <p id="ex3_size8">
+        <button onclick="WriteSquareGrid(8, 'ex3_size8', '<br>')">Run (size=8)</button>
+        <!-- <button onclick="WriteSquareGrid(8, 'ex3_size8', '\n')">Run (size=8)</button> -->
+    </p>
+    <p id="ex3_size14">
+        <button onclick="WriteSquareGrid(14, 'ex3_size14', '<br>')">Run (size=14)</button>
+        <!-- <button onclick="WriteSquareGrid(14, 'ex3_size14', '\n')">Run (size=14)</button> -->
+    </p>
+
+
+</html>
+<!-- JavaScript code below -->
+<script>
+
+// ---------------------------------
+// helper functions
+// ---------------------------------
+
+// sets the html paragraph with a given elementID to write text
+function WriteToP(elementID,text) {
+    let p = document.getElementById(elementID);
+    p.innerHTML = text;
+}
+
+// ---------------------------------
+// Exercise 2.1 - Looping a triangle
+// ---------------------------------
+
+// builds a text triangle of x's with the number or rows equal to the size argument.
+function BuildTriangle(size) {
+    // initialize string to store triangle
+    let tri ="";
+    // loop for "size" number of times. Each iteration builds a row that is one "x" longer than the previous.
+    for(let i=1; i<=size; i++) {
+        // Build a string with i number of x's
+        tri += BuildXs(i);
+        // add html line break
+        tri += "<br>";
+    }
+    // update html paragraph with triangle
+    WriteToP("ex1",tri);
+}
+
+// build a string with n number of x's
+function BuildXs(n) {
+    // initialize string
+    let x = "";
+    // loop n number of times
+    for(let i=0; i<n; i++) {
+        // append x to the string
+        x += "x";
+    }
+    // return completed string with n number of x's
+    return x;
+}
+
+// ---------------------------------
+// Exercise 2.2 – FizzBuzz
+// ---------------------------------
+
+// runs Exercise 2.2 – FizzBuzz, which prints all the numbers from 1 to 100, with some exceptions: 
+//      (1) For numbers divisible by 4, print "Divisible by 4" instead of the number. 
+//      (2) For numbers divisible by 7, but not 4, print "Divisible by 7, but not 4" instead. 
+//      (3) For numbers divisible by both 4 and 7, print “Divisible by both 4 and 7”.
+function FizzBuzz(n) {
+    // initialize fizzbuzz text to print to html
+    let text = ""
+    // loop n times
+    for(let i=1; i<=n; i++) {
+        // check for exceptions 1,2,3
+        // (2) For numbers divisible by 7, but not 4, print "Divisible by 7, but not 4" instead. 
+        if( IsDivisBy(i,7) && !( IsDivisBy(i,4) )){ text += "Divisible by 7, but not 4. "; }
+        // (3) For numbers divisible by both 4 and 7, print “Divisible by both 4 and 7”.
+        else if(IsDivisBy(i,7) && ( IsDivisBy(i,4) )){ text += "Divisible by both 4 and 7. "; }
+        // (1) For numbers divisible by 4, print "Divisible by 4" instead of the number. 
+        else if( IsDivisBy(i,4) ) { text += "Divisible by 4. "; }
+        // otherwise... just add the number
+        else { text = text + i + ". "; } // end if 
+    } // end for 
+    // write fizzbuzz numbers from 1 to n to html paragraph "ex2"
+    WriteToP("ex2",text)
+}
+
+// checks if a number num is divisible by divBy
+function IsDivisBy(num, divBy) {
+    // returns true if num is divisible by divBy, false otherwise.
+    return (num % divBy == 0)
+}
+
+// ---------------------------------
+// Exercise 2.3 – n-by-n Grid
+// ---------------------------------
+
+// writes an n-by-n grid, where n is the size argument. 
+// The id argument is the element id of where the text is added. 
+// The breakStr argument is the string used for a newline. This is typically "<br>" or "\n".
+function WriteSquareGrid(size, id, breakStr){
+    // write size as grid header
+    let text = "size = " + size + breakStr;
+    // write n-by-n grid
+    text += BuildGrid(size,size,breakStr)
+    // display text in paragraph element id
+    WriteToP(id, text);
+}
+
+// build a w width by h height grid.
+// The breakStr argument is the string used for a newline. This is typically "<br>" or "\n".
+function BuildGrid(w,h,breakStr){
+    // define characters
+    const oddchar = "_"; // I am using a "_" instead of a space because my browser wont show a leading space.
+    const evenChar = "*";
+    // initialize string that holds the character grid
+    let table = "";
+    // loop h times for the height 
+    for(let i=1; i<=h; i++){
+        // initialize row string
+        let row = ""
+        // even row start with *
+        if( IsDivisBy(i,2) ) { row += BuildRow(w,evenChar,oddchar) }
+        // odd row start with _
+        else{ row += BuildRow(w,oddchar,evenChar) }
+        // add row and newline break to table
+        table = table + row + breakStr;
+    }
+    // return finished w-by-h grid of alternating characters
+    return table
+}
+
+// build a string with w (width) characters. The character is oddChar for odd-numbered indices, and evenChar otherwise. 
+function BuildRow(w, oddChar, evenChar) {
+    // initialize string
+    let row = "";
+    // loop w times 
+    for(let i=1; i<=w; i++){
+        // i is even 
+        if( IsDivisBy(i,2) ){
+            row += evenChar;
+        }
+        // i is odd
+        else{
+            row += oddChar;
+        } // end if
+    } // end for
+    // return row with w characters alternating with odd and even characters
+    return row
+}
+
+// end
+</script>

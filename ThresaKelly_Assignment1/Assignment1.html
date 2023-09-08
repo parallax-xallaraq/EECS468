@@ -1,0 +1,49 @@
+
+<!-- 
+    Author: Thresa Kelly.
+    Date: 8/25/23.
+    File: EECS 468 Assignment 1.
+    Description: Webpage with two buttons "Hello World!" test buttons, which open an alert when clicked.
+    Inputs: Button clicks .
+    Outputs: Alerts .
+    Sources: Lecture slides "2-(8-25) JavaScript and the Browser".
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Set title of Webpage -->
+        <title>Hello World!</title>
+    </head>
+    <body>
+        <p>
+            <!-- button that performs test1() JS function -->
+            <button onclick="test1()">Test 1 for Hello World</button>
+        </p>
+        <!-- setup paragraphs for test 2 -->
+        <p id="test2p_hello"></p>
+        <p id="test2p_world"></p>
+        <p>
+            <!-- button that performs test2() JS function -->
+            <button onclick="test2()">Test 2 for Hello World</button>
+        </p>
+
+    </body>
+</html>
+<script>
+    // function for button 1
+    function test1(){
+        // make an alert pop up with "Hello World!" text
+        alert("Hello World!");    
+    }
+    // function for button 2
+    function test2(){
+        // Get paragraph elements
+        var hello = document.getElementById("test2p_hello");
+        var world = document.getElementById("test2p_world");
+        // Change paragraph text to "Hello World!" on different lines 
+        hello.innerHTML = "Hello";
+        world.innerHTML = "World!";
+    }
+</script>
