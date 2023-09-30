@@ -2,98 +2,86 @@
     Author: Thresa Kelly.
     Date: 9/30/23.
     File: EECS 468 Assignment 4.
-    Description: 
-    Inputs:  
-    Outputs
+    Description: Clicking different button tabls build the phrase "Rock Chalk Jayhawk - Go KU!".
+    Inputs: buttons as tabs.
+    Outputs: text.
     Sources: Referenced the lecture slides.
 -->
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
-        <!-- The title of your web page should be “Your Last Name’s Go KU! Page”, where 
-            “Your Last Name” is your last name (e.g., “Johnson’s Go KU! Page”).  -->
+        <!-- The title of your web page should be “Your Last Name’s Go KU! Page” -->
         <title>Kelly's Go KU! Page</title>
     </head>
-    <tab-panel>
+    <!-- The code for the tab-panel below is provided in the assignment instructions -->
+    <tab-panel> 
         <div data-tabname="Rock">Rock ...</div>
         <div data-tabname="Chalk">Rock Chalk ...</div>
         <div data-tabname="Jayhawk">Rock Chalk Jayhawk ...</div>
         <div data-tabname="Go KU!">Rock Chalk Jayhawk - Go KU!</div> 
     </tab-panel>
-    <p id="comments"></p>
 <script>   
-    function AddComment(message){
-        var element = document.getElementById("comments");
-        element.innerHTML = element.innerHTML + ' || ' + message;
-    }
-
-    /*
+    /*  Assignment 4: 
         Takes a DOM node and creates a tabbed interface showing the child elements of that node.
         It should insert a list of <button> elements at the top of the node, one for each child element, 
         containing text retrieved from the data-tabname attribute of the child. All but one of the original 
         children should be hidden. The currently visible node can be selected by clicking the buttons.
         Color the button for the currently selected tab red so that it is obvious which tab is selected.
-        Color the rest of the buttons blue.
-        On startup, the web page should display “Rock” highlighted and the text “Rock...” displayed
+        Color the rest of the buttons blue. On startup, the web page should display “Rock” highlighted and 
+        the text “Rock...” displayed
     */
+
+    // builds a button for each child in node, then clicks the first button
     function asTabs(node) {
-        // initialize arrays
-        let tabnames = [];
+        // initialize list to hold buttons (one for each child)
         let buttons = [];
-
-        // get children 
+        // get children of this node 
         let nodeList = node.children;
-
-        // loop for each child 
+        // build button for each child 
         for (let i = 0; i < nodeList.length; i++) {
-            // get the tab name
+            // get the data-tabname name of the child 
             let name = nodeList[i].getAttribute("data-tabname");
-            tabnames.push(name);
             // build a button 
-            let but = document.createElement("button");
-            but.innerHTML = name;
-            // but.style.backgroundColor = GetBlue()
-            but.setAttribute("data-tabname", name);
-            but.setAttribute("onclick","Toggle(this)");
-            buttons.push(but);
-            // hide text
-            // Hide(true,nodeList[i]);
-        }
+            let but = document.createElement("button"); // create button element 
+            but.innerHTML = name; // set text of button to be the data-tabname
+            but.setAttribute("data-tabname", name); // add data-tabname attribute 
+            but.setAttribute("onclick","Tab(this)"); // set function to call when clicked 
+            buttons.push(but); // add button to end of list 
+        } // end for
         // add buttons to top of node 
         for(let i = nodeList.length-1; i >= 0; i--) {
-            node.insertBefore(buttons[i], nodeList[0]);
-        }
-
+            // add button to place just before the first child 
+            node.insertBefore(buttons[i], nodeList[0]); 
+        } // end for 
         // click first button 
         buttons[0].click();
-    }   
+    } // end func
     asTabs(document.querySelector("tab-panel")); // run 
 
-
-    function Toggle(button){
+    // clicking a button will select the current tab: this button turns red and shows the appropropriate text
+    function Tab(button){
         // reset 
         HideAllDiv(); // hide all divs 
         AllBlue(); // change all buttons to blue 
-
-        // change this button from blue to red 
-        button.style.backgroundColor = GetRed();
-
-        let tabname = button.getAttribute('data-tabname'); 
+        // tab
+        button.style.backgroundColor = GetRed();// change this button from blue to red 
+        let tabname = button.getAttribute('data-tabname'); // get data-tabname of this button 
         let divs = document.getElementsByTagName('div'); // get all divs in DOM
-
-        for(let i=0; i<divs.length; i++){
+        for(let i=0; i<divs.length; i++){ // loop for each div 
+            // check the data-tabname of each div to see if it matches the button 
             if( tabname == divs[i].getAttribute("data-tabname") ) {
-                Hide(false,divs[i])
-            }
-        }
-    }
+                // show the matching div
+                Hide(false,divs[i]);
+            } // end if
+        } // end for
+    } // end func 
 
     // hides the node when true, shows node when false.
     function Hide(hideFlag, node) {
         if(hideFlag == true) { node.style.display="none";  } // hide
         else                 { node.style.display="block"; } // show 
-    }
+    } // end func
 
     // make all buttons blue
     function AllBlue() {
@@ -102,27 +90,28 @@
         for(const but of buttons ) {
             // set button to be blue 
             but.style.backgroundColor = GetBlue();
-        }
-    }
+        } // end for
+    } // end func 
 
+    // hide all divs in document 
     function HideAllDiv(){
         // get all divs in documents 
         let divs = document.getElementsByTagName('div');
         for(let i=0; i<divs.length; i++){
             // hide this dive by style.display="none"
             Hide(true, divs[i])
-        }
-    }
+        } // end for
+    } // end func
 
     // returns a hex string for blue
     function GetBlue() {
         return "#4385DC"; // light blue
-    }
+    } // end func 
     
     // returns a hex string for red
     function GetRed() {
         return "#FF8888"; // light red
-    }
+    } // end func 
 
 </script>
 </html>
