@@ -1,0 +1,88 @@
+<!-- 
+    Author: Thresa Kelly.
+    Date: 10/15/23.
+    File: EECS 468 Assignment 5.
+    Description: 
+    Inputs: 
+    Outputs: 
+    Sources: Referenced the lecture slides.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"> <!-- use standard utf-8 character set -->
+        <title>Thresa Kelly</title> <!-- The title of your web page -->
+    </head>
+    <!-- add canvas for each pie chart -->
+    <canvas id="Data Set 1", width="200" height="240"></canvas>
+    <canvas id="Data Set 2", width="200" height="240"></canvas>
+</html>
+<script>
+    // return result of data set 1. Given by assignment instructions
+    function Data1() {
+        return [
+            {name : 'Very happy',   count : 104, color : 'green'},
+            {name : 'Happy',        count :  63, color : 'yellow'},
+            {name : 'Neutral',      count :  87, color : 'orange'},
+            {name : 'Unhappy',      count :  51, color : 'red'},
+            {name : 'Very unhappy', count :  26, color : 'purple'},
+            {name : 'No comment',   count :  18, color : 'gray'},
+        ]
+    }
+
+    // return result of data set 2. Given by assignment instructions
+    function Data2() {
+        return [
+            {name : 'Satisfied',    count : 927, color : 'yellow'},
+            {name : 'Neutral',      count : 213, color : 'orange'},
+            {name : 'Unsatisfied',  count : 463, color : 'red'},
+            {name : 'No comment',   count : 510, color : 'gray'},
+        ]
+    }
+
+    // function used class notes Lec13 as reference
+    // draws a pie chart from results 
+    function drawPie(id, results) {
+        let cx = document.getElementById(id).getContext("2d"); // get canvas
+        // format text
+        cx.font = "12px Georgia";
+        cx.textAlign = "center";
+        cx.fillStyle = "black";
+        // calc useful values for pie chart 
+        let total = results.reduce((sum, {count}) => sum + count, 0); // calculate total number of counts 
+        let currentAngle = -0.5 * Math.PI; // Start at the top
+        // draw each slice of pie
+        for (let result of results) { 
+            let sliceAngle = (result.count/ total) * 2 * Math.PI; // calculate angle as fraction of total 
+            // draw slice 
+            cx.beginPath(); // start drawing
+            cx.arc(100, 140, 100, currentAngle, currentAngle+ sliceAngle); // center=100,140, radius=100 // from current angle, clockwise by slice's angle
+            cx.lineTo(100, 140); // draw line to center 
+            cx.fillStyle = result.color; // set color to fill slice 
+            cx.fill(); // fill slice with color
+            // iterate
+            currentAngle += sliceAngle; // increment angle for next loop iter
+        }
+        // finish drawing pie chart before adding lables. lables get covered if you dont.
+        currentAngle = -0.5 * Math.PI; // Start at the top
+        for (let result of results) { // for each slice of pie
+            let sliceAngle = (result.count/ total) * 2 * Math.PI; // calculate angle as fraction of total 
+            // add text 
+            let textAngle = currentAngle + sliceAngle/2 // get angle ot center of slice 
+            let x = 65*Math.cos(textAngle) + 100 // calculate x position on center of slice, then add center x
+            let y = 65*Math.sin(textAngle) + 140 // calculate y position on center of slice, then add center y
+            cx.fillStyle = "black";
+            cx.fillText(result.name, x, y);
+            // iterate
+            currentAngle += sliceAngle; // increment angle for next loop iter
+        }
+        // write title
+        cx.font = "18px Georgia";
+        cx.fillText(id, 100, 20);  
+    }
+
+    // draw pie charts on open
+    drawPie("Data Set 1", Data1())
+    drawPie("Data Set 2", Data2())
+
+</script>
