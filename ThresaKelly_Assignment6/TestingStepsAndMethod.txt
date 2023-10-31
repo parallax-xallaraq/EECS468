@@ -1,0 +1,103 @@
+---------------------------------------------------------------------------------
+Author: Thresa Kelly.
+Date: 10/30/23.
+File: EECS 468 Assignment 6.
+Description: How to test the GET, PUT, DELETE, and MKCOL methods on server.
+Replit link: https://replit.com/join/qnmdgbjncc-polaris133pc
+---------------------------------------------------------------------------------
+Note: The character ">>" refers to the command line of the Shell.
+---------------------------------------------------------------------------------
+
+=== INTRODUCTION ===
+
+First, open the Replit link for this project. Click the Run button at the top of the window. This will stat the server defined in index.js. The server is located here: " http://localhost:8000/ ". The Webview on the right should list all of the files in this project. 
+
+Next, open the Shell. This is how we will test the GET, PUT, DELETE, and MCOL methods on server
+
+=== GET ===
+
+I have uploaded Test.txt to this project. It contians the text "Can you see me?". To check if the GET method works, we will call GET on this server requesting this file. 
+
+Run the following in terminal:
+  >> curl -X GET http://localhost:8000/Test.txt
+This should return the following: 
+  >> Can you see me?
+
+=== PUT ===
+
+To check PUT, we need to use curl to create a new file to add to the server. 
+
+Run the following in terminal:
+  >> curl -X PUT -d "This is my new PUT file." http://localhost:8000/file.txt
+After doing this, we should see file.txt appear in the project files. Another way to verify that the file has been created is to use GET:
+  >> curl -X GET http://localhost:8000/file.txt
+This should return the following: 
+  >> This is my new PUT file.
+
+=== DELETE ===
+
+Do this section after completing the PUT section. To test DELETE, we will be deleting the new file.txt created by PUT.
+
+Run the following in terminal:
+  >> curl -X DELETE http://localhost:8000/file.txt
+You should see file.txt disappear from the project. You can also check this by using GET:
+  >> curl -X GET http://localhost:8000/file.txt
+This should return the following: 
+  >> File not found.
+
+=== MKCOL ===
+
+Next, we want to make a new directory. To test this, we will make a new folder called NewDir in this server using curl.
+
+Run the following in terminal:
+  >> curl -X MKCOL http://localhost:8000/NewDir
+Now, we should see the NewDir folder appear in the project. You can also test to see if the NewDir exists by running the following:
+  >> curl http://localhost:8000
+This should return the following:
+  >>.breakpoints
+    .cache
+    .replit
+    .upm
+    Assignment 6 Instructions.pdf
+    NewDir
+    Rubric 6.docx
+    Test.txt
+    TestingStepsAndMethod.txt
+    index.js
+    node_modules
+    package-lock.json
+    package.json
+    replit.nix
+Notice that NewDir has appeared in this output. 
+
+To remove the newly made NewDir, you need to delete it in the Replit project. The server does not support deleting directories. 
+
+=== BAD METHODS ===
+
+The server should only support GET, PUT, DELETE, and MKCOL methods and no others. Using curl, the -I flag outputs the server header to the terminal, which includes the status code on the first line.
+
+Here is an example of a good method:
+  >> curl -I -X GET http://localhost:8000/Test.txt
+This should output something like this:
+  >>  HTTP/1.1 200 OK
+      Content-Type: text/plain
+      Date: Tue, 31 Oct 2023 01:14:08 GMT
+      Connection: keep-alive
+      Keep-Alive: timeout=5
+      Transfer-Encoding: chunked
+Note the 200 OK status on the first line.
+
+Here is an example of a bad method:
+  >> curl -I -X HEAD http://localhost:8000/
+This should output something like this:
+  >>  HTTP/1.1 405 Method Not Allowed
+      Content-Type: text/plain
+      Date: Tue, 31 Oct 2023 01:19:13 GMT
+      Connection: keep-alive
+      Keep-Alive: timeout=5
+Note the 405 Method Not Allowed status on the first line. 
+You should also see "405 Method HEAD is not supported." appear in the server console. 
+
+=== CONCLUSIONS === 
+
+By running the tests described above, we should see that the GET, PUT, DELETE, and MKCOL methods work on the server!
